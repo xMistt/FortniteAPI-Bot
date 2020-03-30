@@ -80,6 +80,38 @@ async def aes(ctx) -> None:
 
         await ctx.send(embed=embed)
 
+    elif status == 401:
+        embed = discord.Embed(
+            title=f"Invalid/Missing Fortnite-API API key.",
+            colour=0xFF0000
+        )
+
+        embed.add_field(
+            name="Error",
+            value=response['error']
+        )
+
+        embed.add_field(
+            name="Get API key",
+            value='You can get a new api key from the [Fortnite-API website](https://fortnite-api.com/).',
+            inline=False
+        )
+
+        await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(
+            title=f"Unknown error occurred.",
+            colour=0xFF0000
+        )
+
+        embed.add_field(
+            name="Error",
+            value=response.get('error', 'No error provided.')
+        )
+
+        await ctx.send(embed=embed)
+
 
 @bot.command()
 async def shop(ctx, lang: str = 'en') -> None:
@@ -108,6 +140,37 @@ async def shop(ctx, lang: str = 'en') -> None:
         await ctx.send(embed=featured)
         await ctx.send(embed=daily)
 
+    elif status == 401:
+        embed = discord.Embed(
+            title=f"Invalid/Missing Fortnite-API API key.",
+            colour=0xFF0000
+        )
+
+        embed.add_field(
+            name="Error",
+            value=response['error']
+        )
+
+        embed.add_field(
+            name="Get API key",
+            value='You can get a new api key from the [Fortnite-API website](https://fortnite-api.com/).',
+            inline=False
+        )
+
+        await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(
+            title=f"Unknown error occurred.",
+            colour=0xFF0000
+        )
+
+        embed.add_field(
+            name="Error",
+            value=response.get('error', 'No error provided.')
+        )
+
+        await ctx.send(embed=embed)
 
 
 
