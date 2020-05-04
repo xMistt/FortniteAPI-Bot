@@ -5,7 +5,7 @@ import aiohttp
 import json
 import datetime
 
-FORTNITE_API_BASE = 'https://fortnite-api.com/'
+FORTNITE_API_BASE = 'https://fortnite-api.com/v2/'
 
 with open('tokens.json') as f:
     data = json.load(f)
@@ -33,8 +33,7 @@ async def fortnite_api_request(url: str, params: dict = {}) -> dict:
         async with session.request(
             method='GET',
             url=f'{FORTNITE_API_BASE}{url}',
-            params=params,
-            headers={"x-api-key": data['fnapi-api-key']},
+            params=params
         ) as r:
             return await r.json()
 
@@ -61,24 +60,6 @@ async def aes(ctx) -> None:
     response = await fortnite_api_request('aes')
 
     status = response.get('status', 400)
-
-    if status == 200:
-        # last_update = from_iso(response['data']['lastUpdate']).strftime("%b %d %Y %H:%M:%S")
-
-        embed = discord.Embed(
-            title=f"AES for {response['data']['build'].split('Release-')[1].split('-CL-')[0]}.",
-            colour=0xE83E8C
-        )
-
-        embed.add_field(name="AES", value=response['data']['aes'])
-        embed.add_field(name="Build", value=response['data']['build'], inline=False)
-
-        embed.set_footer(
-            text=f"Last Update: {response['data']['lastUpdate']}",
-            icon_url="https://fortnite-api.com/logo.png"
-        )
-
-        await ctx.send(embed=embed)
 
     elif status == 401:
         embed = discord.Embed(
@@ -139,25 +120,6 @@ async def shop(ctx, lang: str = 'en') -> None:
 
         await ctx.send(embed=featured)
         await ctx.send(embed=daily)
-
-    elif status == 401:
-        embed = discord.Embed(
-            title=f"Invalid/Missing Fortnite-API API key.",
-            colour=0xFF0000
-        )
-
-        embed.add_field(
-            name="Error",
-            value=response['error']
-        )
-
-        embed.add_field(
-            name="Get API key",
-            value='You can get a new api key from the [Fortnite-API website](https://fortnite-api.com/).',
-            inline=False
-        )
-
-        await ctx.send(embed=embed)
 
     else:
         embed = discord.Embed(
